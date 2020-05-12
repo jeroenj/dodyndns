@@ -1,0 +1,13 @@
+name: dodyndns
+version: 0.1.0
+
+authors:
+  - Jeroen Jacobs <dodyndns@jeroenj.be>
+
+targets:
+  dodyndns:
+    main: src/dodyndns.cr
+
+crystal: 0.34.0
+
+license: MIT
