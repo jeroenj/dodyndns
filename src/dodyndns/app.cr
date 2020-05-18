@@ -71,7 +71,7 @@ module Dodyndns
       Log.debug { "Current IP: #{record.data}" }
 
       if record.data == ip
-        Log.info { "Not updating #{dns_type} record for #{name}.#{domain} since the IP address hasn't changed." }
+        Log.info { "Not updating #{dns_type} record for #{name}.#{domain} since the IP address (#{ip}) hasn't changed." }
       else
         Log.info { "Updating #{dns_type} record for #{name}.#{domain} from #{record.data} to #{ip}." }
         res = @client.put("/v2/domains/#{domain}/records/#{record.id}", "{\"data\":\"#{ip}\"}")
