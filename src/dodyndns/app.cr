@@ -33,12 +33,19 @@ module Dodyndns
       Log.debug { "DNS Type: #{dns_type}" }
 
       unless ip
-        ip_response = HTTP::Client.get("https://ipv#{ip_version}.srvd.be")
-        if ip_response.success?
-          ip = ip_response.body.lines.first
-        else
+        begin
+          ip_response = HTTP::Client.get("https://ipv#{ip_version}.srvd.be")
+
+          if ip_response.success?
+            ip = ip_response.body.lines.first
+          else
+            Log.error { "Could not figure out the IP address." }
+            Log.debug { "Response: #{ip_response.body}" }
+            exit 1
+          end
+        rescue ex : Exception
           Log.error { "Could not figure out the IP address." }
-          Log.debug { "Response: #{ip_response.body}" }
+          Log.debug { ex.message }
           exit 1
         end
       end
