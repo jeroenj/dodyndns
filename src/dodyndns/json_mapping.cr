@@ -2,17 +2,17 @@ require "json"
 
 module Dodyndns
   class DomainRecords
-    JSON.mapping(
-      domain_records: {type: Array(DomainRecord)}
-    )
+    include JSON::Serializable
+
+    property domain_records : Array(DomainRecord)
   end
 
   class DomainRecord
-    JSON.mapping(
-      id: Int64,
-      type: String,
-      name: String,
-      data: String
-    )
+    include JSON::Serializable
+
+    property id : Int64
+    property type : String
+    property name : String
+    property data : String
   end
 end
