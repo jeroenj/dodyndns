@@ -4,11 +4,8 @@ require "./json_mapping"
 
 module Dodyndns
   class App
-    def initialize(access_token : String, log_level = Log::Severity)
+    def initialize(access_token : String)
       @client = Dodyndns::Client.new(access_token)
-
-      backend = Log::IOBackend.new(STDOUT)
-      Log.builder.bind("*", log_level, backend)
     end
 
     def update_ipv4(domain : String, name : String, ip : String | Nil)

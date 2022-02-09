@@ -13,7 +13,6 @@ options = Hash(String, Bool){
   "set_ipv4" => true,
   "set_ipv6" => true,
 }
-log_level = Log::Severity::Info
 
 OptionParser.parse do |parser|
   parser.banner = "Usage: dodyndns --domain <domain> --name <name>"
@@ -25,7 +24,7 @@ OptionParser.parse do |parser|
   parser.on("--ipv6 IPV6", "Explicitly set the IPv6 record to this value") { |value| addresses["ipv6"] = value }
   parser.on("--no-ipv4", "Don't manage IPv4 (A) records") { options["set_ipv4"] = false }
   parser.on("--no-ipv6", "Don't manage IPv6 (AAAA) records") { options["set_ipv6"] = false }
-  parser.on("--debug", "Enable debug logging") { log_level = Log::Severity::Debug }
+  parser.on("--debug", "Enable debug logging") { Log.setup(:debug) }
 
   parser.on("-h", "--help", "Show this help") do
     puts parser
@@ -51,8 +50,8 @@ OptionParser.parse do |parser|
 end
 
 module Dodyndns
-  def self.run(domain : String, name : String, access_token : String, addresses : Hash, options : Hash, log_level : Log::Severity)
-    app = Dodyndns::App.new(access_token, log_level)
+  def self.run(domain : String, name : String, access_token : String, addresses : Hash, options : Hash)
+    app = Dodyndns::App.new(access_token)
 
     app.update_ipv4(domain, name, addresses["ipv4"]) if options["set_ipv4"]
     app.update_ipv6(domain, name, addresses["ipv6"]) if options["set_ipv6"]
@@ -78,4 +77,4 @@ if access_token.empty?
   end
 end
 
-Dodyndns.run(domain, name, access_token, addresses, options, log_level)
+Dodyndns.run(domain, name, access_token, addresses, options)
